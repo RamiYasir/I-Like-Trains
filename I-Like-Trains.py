@@ -1,29 +1,19 @@
 import pandas as pd
 import re
 
-def sanitise_data(file_path):
-    with open ('resources/sanitised-data.csv', 'w') as sanitised_data:
-        with open(file_path, 'r') as file:
-            line = file.readline()
-            while line != '':
-                new_line = re.sub(",,+|\(|\)", "", line)
-                sanitised_data.write(new_line)
-                line = file.readline()
-
-
 df = pd.read_csv('resources/sanitised-data.csv')
-
+df.reset_index()
 
 def total_expenses() -> float:
     total_spend = 0
     for expense in df['Net Amount']:
         float_expense = float(re.sub(",", "", expense))
         total_spend += float_expense
-        # print(f"current expense: ${float_expense}, running exense: ${total_spend}")
 
     return total_spend
 
-def get_all_distinct_entries(column: str):
+
+def get_all_distinct_entries(column: str) -> list:
     distinct_entries = []
     for entry in df[column]:
         if entry in distinct_entries:
@@ -31,5 +21,22 @@ def get_all_distinct_entries(column: str):
         distinct_entries.append(entry)
     return distinct_entries
 
-# print(df.to_string())
-print(f'total expense are ${total_expenses()} in these service areas: ${get_all_distinct_entries("Service Area")}, to these suppliers: ${get_all_distinct_entries("Supplier Name")}')
+
+
+def sort_suppliers_by_service_area() -> dict:
+    service_to_supplier = {service: [] for service in get_all_distinct_entries("Service Area")}
+    for supplier in get_all_distinct_entries("Supplier Name"):
+        row = df.loc[df["Supplier Name"] == supplier].iloc[0]
+        service_value = row["Service Area"]
+        supplier_value = row["Supplier Name"]
+
+        if supplier_value in service_to_supplier[service_value]:
+            continue
+        service_to_supplier[service_value].append(supplier_value)
+
+    return service_to_supplier
+            
+
+nice_dictionary = sort_suppliers_by_service_area()
+print(f"${nice_dictionary.popitem()} \n\n\n") 
+print(nice_dictionary.popitem())
