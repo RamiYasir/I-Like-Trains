@@ -1,2 +1,5 @@
-# venv
+# directories
 /.venv
+/__pycache__
+
+Practice-fun-with-data.py
