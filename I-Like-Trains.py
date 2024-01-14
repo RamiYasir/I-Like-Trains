@@ -14,7 +14,7 @@ def sanitise_data(file_path):
 df = pd.read_csv('resources/sanitised-data.csv')
 
 
-def total_expenses():
+def total_expenses() -> float:
     total_spend = 0
     for expense in df['Net Amount']:
         float_expense = float(re.sub(",", "", expense))
@@ -23,16 +23,13 @@ def total_expenses():
 
     return total_spend
 
-
-def get_all_service_areas():
-    service_areas = []
-    for service_area in df["Service Area"]:
-        if service_area in service_areas:
+def get_all_distinct_entries(column: str):
+    distinct_entries = []
+    for entry in df[column]:
+        if entry in distinct_entries:
             continue
-        service_areas.append(service_area)
-    
-    return service_areas
+        distinct_entries.append(entry)
+    return distinct_entries
 
-
-print(df.to_string())
-print(f'total expense are ${total_expenses()} in these service areas: ${get_all_service_areas()}')
+# print(df.to_string())
+print(f'total expense are ${total_expenses()} in these service areas: ${get_all_distinct_entries("Service Area")}, to these suppliers: ${get_all_distinct_entries("Supplier Name")}')
