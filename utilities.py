@@ -35,8 +35,24 @@ def sort_suppliers_by_service_area(df: pd.DataFrame) -> dict:
     return service_to_supplier
 
 
-def total_expenses_per_supplier(df: pd.DataFrame, supplier: str):
+def total_expenses_per_supplier(df: pd.DataFrame, supplier: str) -> float:
     results = df.loc[df["Supplier Name"] == supplier]
     total_expense = total_expenses(results)
 
     return total_expense
+
+
+def create_lists_from_columns(df: pd.DataFrame, limit: int, all_columns: list) -> list:
+    values_per_column = []
+    count = 0
+    while count < len(all_columns):
+        column_values_list = []
+        index = 0
+        while index < limit:
+            row = df.iloc[index]
+            column_values_list.append(row[all_columns[count]])
+            index += 1
+        values_per_column.append(column_values_list)
+        count += 1
+
+    return values_per_column
