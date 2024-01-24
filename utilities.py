@@ -42,7 +42,10 @@ def total_expenses_per_supplier(df: pd.DataFrame, supplier: str) -> float:
     return total_expense
 
 
-def create_lists_from_columns(df: pd.DataFrame, limit: int, all_columns: list) -> list:
+def create_lists_from_columns(df: pd.DataFrame,  all_columns: list, limit=None) -> list:
+    if limit == None: 
+        limit = len(df.index)
+
     values_per_column = []
     count = 0
     while count < len(all_columns):

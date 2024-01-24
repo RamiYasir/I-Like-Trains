@@ -17,4 +17,4 @@ def sanitise_data(file_path) -> None:
                 line = file.readline()
 
 # being lazy and just calling it on each file
-sanitise_data("resources/2223Qtr4Payments.csv")
+sanitise_data("resources/2223Qtr3Payments.csv")
